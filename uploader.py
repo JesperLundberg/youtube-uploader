@@ -54,7 +54,7 @@ if '--upload' in args:
             json.dump(stats, statfile)
 
 if '--delete-archived' in args:
-    archived_files = sorted([f for f in listdir(FINISHED_PATH) if isfile(join(FINISHED_PATH, f))])
+    archived_files = sorted([f for f in listdir(FINISHED_PATH) if isfile(join(FINISHED_PATH, f))], reverse = True)
 
     for index, file in enumerate(archived_files):
         #print str(index) + ' ' + str(file)
