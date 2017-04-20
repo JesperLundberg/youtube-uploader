@@ -60,8 +60,8 @@ if '--delete-archived' in args:
 
     if len(archived_files) <= 9:
         print 'No files to remove'
-
-    for index, file in enumerate(archived_files):
-        if index > 9:
-            os.remove(FINISHED_PATH + file)
-            print 'Removed file: ' + str(file)
+    else:
+        for index, file in enumerate(archived_files):
+            if index > 9:
+                os.remove(FINISHED_PATH + file)
+                print 'Removed file: ' + str(file)
