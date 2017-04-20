@@ -25,8 +25,10 @@ if os.path.isfile('config.json') is not True:
     with open('config.json', 'w') as outfile:
         json.dump(data, outfile)
 
+# Get arguments
 args = str(sys.argv)
 
+# Read config
 with open('config.json', 'r') as configfile:
     config = json.load(configfile)
 
