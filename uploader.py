@@ -34,7 +34,7 @@ with open('config.json', 'r') as configfile:
     config = json.load(configfile)
 
 FILE_PATH = config['file_path']
-FINISHED_PATH = config['archive_path']
+ARCHIVE_PATH = config['archive_path']
 FILES_KEPT_IN_ARCHIVE = int(config['files_kept_in_archive'])
 
 if '--upload' in args:
@@ -52,18 +52,18 @@ if '--upload' in args:
         if result == 0:
             stats['index'] = int(stats['index']) + 1
             stats['size_gb'] = float(stats['size_gb']) + float(os.path.getsize(FILE_PATH + file)) / float(1000000000)
-            os.rename(FILE_PATH + file, FINISHED_PATH + str(stats['index']) + file)
+            os.rename(FILE_PATH + file, ARCHIVE_PATH + str(stats['index']) + file)
 
         with open('stats.json', 'w') as statfile:
             json.dump(stats, statfile)
 
 if '--delete-archived' in args:
-    archived_files = sorted([f for f in listdir(FINISHED_PATH) if isfile(join(FINISHED_PATH, f))], reverse = True)
+    archived_files = sorted([f for f in listdir(ARCHIVE_PATH) if isfile(join(ARCHIVE_PATH, f))], reverse = True)
 
     if len(archived_files) < FILES_KEPT_IN_ARCHIVE:
         print 'No files to remove'
     else:
         for index, file in enumerate(archived_files):
             if index >= FILES_KEPT_IN_ARCHIVE:
-                os.remove(FINISHED_PATH + file)
+                os.remove(ARCHIVE_PATH + file)
                 print 'Removed file: ' + str(file)
