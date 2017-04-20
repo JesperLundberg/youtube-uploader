@@ -56,10 +56,10 @@ if '--upload' in args:
 if '--delete-archived' in args:
     archived_files = sorted([f for f in listdir(FINISHED_PATH) if isfile(join(FINISHED_PATH, f))], reverse = True)
 
+    if len(archived_files) <= 9:
+        print 'No files to remove'
+
     for index, file in enumerate(archived_files):
-        #print str(index) + ' ' + str(file)
         if index > 9:
             os.remove(FINISHED_PATH + file)
             print 'Removed file: ' + str(file)
-        if index <= 9:
-            print 'No files to remove'
