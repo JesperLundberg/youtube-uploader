@@ -21,6 +21,7 @@ if os.path.isfile('config.json') is not True:
     data = {}
     data['file_path'] = '/'
     data['archive_path'] = '/archive/'
+    data['files_kept_in_archive'] = 10
 
     with open('config.json', 'w') as outfile:
         json.dump(data, outfile)
@@ -34,6 +35,7 @@ with open('config.json', 'r') as configfile:
 
 FILE_PATH = config['file_path']
 FINISHED_PATH = config['archive_path']
+FILES_KEPT_IN_ARCHIVE = int(config['files_kept_in_archive'])
 
 if '--upload' in args:
     # Read all files
@@ -58,10 +60,10 @@ if '--upload' in args:
 if '--delete-archived' in args:
     archived_files = sorted([f for f in listdir(FINISHED_PATH) if isfile(join(FINISHED_PATH, f))], reverse = True)
 
-    if len(archived_files) <= 9:
+    if len(archived_files) < FILES_KEPT_IN_ARCHIVE:
         print 'No files to remove'
     else:
         for index, file in enumerate(archived_files):
-            if index > 9:
+            if index >= FILES_KEPT_IN_ARCHIVE:
                 os.remove(FINISHED_PATH + file)
                 print 'Removed file: ' + str(file)
