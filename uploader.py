@@ -21,6 +21,7 @@ if os.path.isfile('config.json') is not True:
     data['file_path'] = '/'
     data['archive_path'] = '/archive/'
     data['files_kept_in_archive'] = 10
+    data['privacy'] = 'private'
 
     with open('config.json', 'w') as outfile:
         json.dump(data, outfile)
@@ -35,6 +36,7 @@ with open('config.json', 'r') as configfile:
 FILE_PATH = config['file_path']
 ARCHIVE_PATH = config['archive_path']
 FILES_KEPT_IN_ARCHIVE = int(config['files_kept_in_archive'])
+PRIVACY = config['privacy']
 
 if '--upload' in args:
     # Read all files
@@ -46,7 +48,7 @@ if '--upload' in args:
         with open('stats.json', 'r') as statfile:
             stats = json.load(statfile)
 
-        result = os.system('youtube-upload --title=\"%s\" --privacy private %s' % (file.replace('_', ' '), FILE_PATH + file))
+        result = os.system('youtube-upload --title=\"%s\" --privacy %s %s' % (file.replace('_', ' '), PRIVACY, FILE_PATH + file))
 
         if result == 0:
             stats['index'] = int(stats['index']) + 1
