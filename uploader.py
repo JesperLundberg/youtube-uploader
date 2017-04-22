@@ -12,7 +12,6 @@ if os.path.isfile('stats.json') is not True:
     data = {}  
     data['index'] = '100'
     data['size_gb'] = '0'
-    data['duration'] = '0:00' 
 
     with open('stats.json', 'w') as outfile:
         json.dump(data, outfile)
