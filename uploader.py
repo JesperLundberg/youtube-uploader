@@ -47,7 +47,7 @@ if '--upload' in args:
         with open('stats.json', 'r') as statfile:
             stats = json.load(statfile)
 
-        result = os.system('youtube-upload --title=\"%s\" --privacy private %s' % (file, FILE_PATH + file))
+        result = os.system('youtube-upload --title=\"%s\" --privacy private %s' % (file.replace('_', ' '), FILE_PATH + file))
 
         if result == 0:
             stats['index'] = int(stats['index']) + 1
