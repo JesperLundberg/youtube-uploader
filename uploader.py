@@ -4,6 +4,7 @@ import os
 import sys
 import os.path
 import json
+import csv
 from os import listdir
 from os.path import isfile, join
 
@@ -48,12 +49,18 @@ if '--upload' in args:
         with open('stats.json', 'r') as statfile:
             stats = json.load(statfile)
 
-        result = os.system('youtube-upload --title=\"%s\" --privacy %s %s' % (file.replace('_', ' '), PRIVACY, FILE_PATH + file))
+        result = 1
 
-        if result == 0:
-            stats['index'] = int(stats['index']) + 1
-            stats['size_gb'] = float(stats['size_gb']) + float(os.path.getsize(FILE_PATH + file)) / float(1000000000)
-            os.rename(FILE_PATH + file, ARCHIVE_PATH + str(stats['index']) + file)
+        while result != 0:
+            result = os.system('youtube-upload --title=\"%s\" --privacy %s %s' % (file.replace('_', ' '), PRIVACY, FILE_PATH + file))
+
+       # with open("upload_history.csv", "a") as file:
+       #     writer = csv.writer(file)
+       #     writer.writerows(float(os.path.getsize(FILE_PATH + file)) / float(1000000000))
+
+        stats['index'] = int(stats['index']) + 1
+        stats['size_gb'] = float(stats['size_gb']) + float(os.path.getsize(FILE_PATH + file)) / float(1000000000)
+        os.rename(FILE_PATH + file, ARCHIVE_PATH + str(stats['index']) + file)
 
         with open('stats.json', 'w') as statfile:
             json.dump(stats, statfile)
