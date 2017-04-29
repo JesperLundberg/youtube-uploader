@@ -23,6 +23,7 @@ if os.path.isfile('config.json') is not True:
     data['archive_path'] = '/archive/'
     data['files_kept_in_archive'] = 10
     data['privacy'] = 'private'
+    data['retry_times'] = 5
 
     with open('config.json', 'w') as outfile:
         json.dump(data, outfile)
@@ -38,6 +39,7 @@ FILE_PATH = config['file_path']
 ARCHIVE_PATH = config['archive_path']
 FILES_KEPT_IN_ARCHIVE = int(config['files_kept_in_archive'])
 PRIVACY = config['privacy']
+RETRY_TIMES = config['retry_times']
 
 if '--upload' in args:
     # Read all files
@@ -50,9 +52,11 @@ if '--upload' in args:
             stats = json.load(statfile)
 
         result = 1
+        times = 1
 
-        while result != 0:
+        while result != 0 or times == RETRY_TIMES:
             result = os.system('youtube-upload --title=\"%s\" --privacy %s %s' % (file.replace('_', ' '), PRIVACY, FILE_PATH + file))
+            times += 1
 
        # with open("upload_history.csv", "a") as file:
        #     writer = csv.writer(file)
