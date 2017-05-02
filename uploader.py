@@ -55,7 +55,7 @@ if '--upload' in args:
         times = 1
 
         while result != 0 or times == RETRY_TIMES:
-            result = os.system('youtube-upload --title=\"%s\" --privacy %s %s' % (file.replace('_', ' '), PRIVACY, FILE_PATH + file))
+            result = os.system('youtube-upload --title=\"%s\" --privacy %s %s' % (file.replace('_', ' ').replace('.mp4', ''), PRIVACY, FILE_PATH + file))
             times += 1
 
        # with open("upload_history.csv", "a") as file:
